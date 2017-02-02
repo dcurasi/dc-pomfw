@@ -30,7 +30,13 @@ class Dc_Pomfw_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		delete_option('dc_pomfw_activate');
+	    delete_option('dc_pomfw_message');
+	    delete_option('dc_pomfw_position');
+	    delete_option('dc_pomfw_login_text');
+	    delete_option('dc_pomfw_login_link');
+	    delete_option('dc_pomfw_register_text');
+	    delete_option('dc_pomfw_register_link');
 	}
 
 }

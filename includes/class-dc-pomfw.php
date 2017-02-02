@@ -151,8 +151,18 @@ class Dc_Pomfw {
 
 		$plugin_admin = new Dc_Pomfw_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		//$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		//$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu_page' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_api_init' );
+		$this->loader->add_shortcode('login', $plugin_admin, 'dc_pomfw_login_link', $priority = 10, $accepted_args = 2 );
+		$this->loader->add_shortcode('register', $plugin_admin, 'dc_pomfw_register_link', $priority = 10, $accepted_args = 2 );
+		if ( !in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+			$this->loader->add_action( 'admin_notices', $plugin_admin, 'error_notice' );
+		}
+		if ( in_array( 'polylang/polylang.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+			$this->loader->add_action( 'plugins_loaded', $plugin_admin, 'dc_pomfw_register_string_polylang' );
+		}
 
 	}
 
@@ -166,9 +176,19 @@ class Dc_Pomfw {
 	private function define_public_hooks() {
 
 		$plugin_public = new Dc_Pomfw_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+			if(get_option('dc_pomfw_activate')) {
+				//$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+				//$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+				$this->loader->add_filter( 'woocommerce_init', $plugin_public, 'dc_pomfw_remove_prices');
+				if(get_option('dc_pomfw_position') == 'before_main_content') {
+					$this->loader->add_filter( 'woocommerce_before_main_content', $plugin_public, 'dc_pomfw_content_notice');
+				}
+				else {
+					$this->loader->add_filter( 'woocommerce_get_price_html', $plugin_public, 'dc_pomfw_prices_notice');
+				}
+			}
+		}
 
 	}
 

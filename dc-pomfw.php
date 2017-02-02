@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Prices Only Members for Woocommerce
  * Plugin URI:        https://github.com/dcurasi/dc-pomfw
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Prices Only Members for Woocommerce allows you to display the prices only to registered users.
  * Version:           1.0.0
  * Author:            Dario Curasì
  * Author URI:        https://github.com/dcurasi

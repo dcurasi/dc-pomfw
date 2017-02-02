@@ -100,4 +100,51 @@ class Dc_Pomfw_Public {
 
 	}
 
+	/**
+	 * remove prices
+	 *
+	 * @since    1.0.0
+	 */
+	public function dc_pomfw_remove_prices() {
+		if(!is_user_logged_in() ) {
+			remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+        	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+        	if(get_option('dc_pomfw_position') == 'before_main_content') {
+        		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+        	}
+		}
+	}
+
+	/**
+	 * call type notice
+	 *
+	 * @since    1.0.0
+	 */
+	public function dc_pomfw_prices_notice() {
+		if(!is_user_logged_in() ) {
+    		if ( in_array( 'polylang/polylang.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) && function_exists('pll__') ) {
+    			echo do_shortcode(pll__(get_option('dc_pomfw_message')));
+    		}
+    		else {
+    			echo do_shortcode(get_option('dc_pomfw_message'));
+    		}
+		}
+	}
+
+	/**
+	 * display notice
+	 *
+	 * @since    1.0.0
+	 */
+	public function dc_pomfw_content_notice() {
+		if(!is_user_logged_in() ) {
+			if ( in_array( 'polylang/polylang.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) && function_exists('pll__') ) {
+				wc_print_notice(do_shortcode(pll__(get_option('dc_pomfw_message'))), 'notice');
+			}
+			else {
+				wc_print_notice(do_shortcode(get_option('dc_pomfw_message')), 'notice');
+			}
+		}
+	}
+
 }

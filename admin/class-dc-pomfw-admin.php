@@ -100,4 +100,88 @@ class Dc_Pomfw_Admin {
 
 	}
 
+	//inizializzazione menu di amministrazione
+	function add_menu_page()
+	{
+	    add_submenu_page('woocommerce','Prices Only Members', 'Prices Only Members', 'manage_options', 'dc-pomfw-menu-page', array( $this,'create_admin_interface' ));
+	}
+
+	/**
+	 * Callback function for the admin settings page.
+	 *
+	 * @since    1.0.0
+	 */
+	public function create_admin_interface(){
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/dc-pomfw-admin-display.php';
+
+	}
+
+	/**
+	 * Creates our settings sections with fields etc.
+	 *
+	 * @since    1.0.0
+	 */
+	public function settings_api_init(){
+		register_setting('dc_pomfw_options_group', 'dc_pomfw_activate');
+	    register_setting('dc_pomfw_options_group', 'dc_pomfw_message');
+	    register_setting('dc_pomfw_options_group', 'dc_pomfw_position');
+	    register_setting('dc_pomfw_options_group', 'dc_pomfw_login_text');
+	    register_setting('dc_pomfw_options_group', 'dc_pomfw_login_link');
+	    register_setting('dc_pomfw_options_group', 'dc_pomfw_register_text');
+	    register_setting('dc_pomfw_options_group', 'dc_pomfw_register_link');
+	}
+
+	/**
+	 * shortcode login
+	 *
+	 * @since    1.0.0
+	 */
+	public function dc_pomfw_login_link() {
+		if ( in_array( 'polylang/polylang.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) && function_exists('pll__') ) {
+	    	return '<a href="'.get_option('dc_pomfw_login_link').'">'.pll__(get_option('dc_pomfw_login_text')).'</a>';
+	    }
+	    else {
+	    	return '<a href="'.get_option('dc_pomfw_login_link').'">'.get_option('dc_pomfw_login_text').'</a>';
+	    }
+	}
+
+	/**
+	 * shortcode register
+	 *
+	 * @since    1.0.0
+	 */
+	public function dc_pomfw_register_link() {
+		if ( in_array( 'polylang/polylang.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) && function_exists('pll__') ) {
+	    	return '<a href="'.get_option('dc_pomfw_register_link').'">'.pll__(get_option('dc_pomfw_register_text')).'</a>';
+	    }
+	    else {
+	    	return '<a href="'.get_option('dc_pomfw_register_link').'">'.get_option('dc_pomfw_register_text').'</a>';
+	    }
+	}
+
+	/**
+	 * Error notice when Woocommerce is not installed.
+	 *
+	 * @since    1.0.0
+	 */
+	public function error_notice() {
+		echo '<div class="notice notice-error is-dismissible">
+        		<p>'.__('Prices Only Members for Woocommerce is active but does not work. You need to install WooCommerce because the plugin is working properly.', 'dc-pomfw').'</p>
+    		  </div>';
+	}
+
+	/**
+	 * register string in polylang
+	 *
+	 * @since    1.0.0
+	 */
+	public function dc_pomfw_register_string_polylang() {
+		if (function_exists('pll_register_string')) {
+			pll_register_string('Message', get_option('dc_pomfw_message'), 'dc-pomfw');
+			pll_register_string('Login Text', get_option('dc_pomfw_login_text'), 'dc-pomfw');
+			pll_register_string('Register Text', get_option('dc_pomfw_register_text'), 'dc-pomfw');
+		}
+	}
+
 }
