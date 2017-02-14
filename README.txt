@@ -2,7 +2,7 @@
 
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KZRGHFSGGRXU6
 Contributors: dcurasi
-Tags: prices, woocommerce prices, members only, prices only members, woocommerce, price, members, woocommerce only members, prices, prices only members for woocommerce, e-commerce, shop, cart, dcurasi,
+Tags: woocommerce, prices, woocommerce prices, members only, prices only members, price, members, woocommerce only members, prices, prices only members for woocommerce, e-commerce, shop, cart
 Requires at least: 3.0.1
 Tested up to: 4.7.2
 Stable tag: 1.0.0
